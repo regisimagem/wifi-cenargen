@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wifi-Cenargen - Acesso Visitante</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@govbr-ds/core/dist/core-tokens.min.css">
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@govbr-ds/webcomponents/dist/webcomponents/webcomponents.esm.js"></script>
+
+    <script>var submitted = false;</script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #444;
+            background: #f5f5f5;
+        }
+
+        body {
+            min-height: 100vh;
+          
+        }
+
+        form[name="message"] {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        form[name="message"] > div {
+            flex: 1;
+        }
+
+        .gov-header {
+            height: 92px;
+            min-height: 92px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+        }
+
+        .gov-header-inner {
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 30px 0 29px;
+            position: relative;
+        }
+
+        .gov-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .gov-logo {
+            font-weight: 900;
+            font-size: 30px;
+            line-height: 30px;
+            letter-spacing: -3px;
+            margin: 5px 0px 0px 0px;
+            padding: 4px 20px 0px 0px;
+            white-space: nowrap;
+        }
+
+        .gov-logo img {
+            width: 90px;
+            height: auto;
+            display: block;
+        }
+
+        .gov-company {
+            border-left: 1px solid #d5d5d5;
+            padding-left: 30px;
+            margin-top: 13px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            color: #555;
+            min-width: 0;
+        }
+
+        .gov-company img {
+            width: clamp(100px, 12vw, 120px);
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gov-nav {
+            margin-left: auto;
+            margin-top: 13px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 15px;
+            color: #2769b0;
+            white-space: nowrap;
+        }
+
+        .gov-nav a {
+            color: #2769b0;
+            text-decoration: none;
+            padding: 0 20px 0 0;
+        }
+
+        .login-pill {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #2769b0;
+            height: 25px;
+            padding: 0 12px;
+            border-radius: 15px;
+            background: #f7f7f7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: bold;
+            font-size: 11px;
+            border: 0;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .login-pill:hover {
+            background: #eeeeee;
+        }
+
+        .login-icon {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #155ba0;
+            position: relative;
+            display: inline-block;
+        }
+
+        .login-icon:after {
+            content: "";
+            position: absolute;
+            width: 7px;
+            height: 4px;
+            border-radius: 7px 7px 3px 3px;
+            background: #155ba0;
+            left: 2.5px;
+            top: 9px;
+        }
+
+        .network-title {
+            position: static;
+            margin-top: 2px;
+            font-size: 13px;
+            color: #444;
+        }
+
+        .network-subtitle {
+            position: absolute;
+            left: 29px;
+            top: 67px;
+            font-size: 10px;
+            color: #555;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 21px 3.7% 0;
+        }
+
+        .message-card {
+            background: #fff;
+            border: 2px solid #ddd;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .10);
+            padding: 38px 40px;
+            min-height: 136px;
+            border-radius: 10px;
+        }
+
+        .message-card h1 {
+            margin: 0 0 19px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .message-card p {
+            margin: 0 0 11px;
+            font-size: 15px;
+            line-height: 1.55;
+            color: #555;
+        }
+
+        .message-card a {
+            color: #3678b7;
+            text-decoration: underline;
+        }
+
+        .br-sign-in,
+        .br-button.sign-in {
+            --button-radius: 100em;
+            --button-xsmall: 24px;
+            --button-small: 32px;
+            --button-medium: 40px;
+            --button-large: 48px;
+            --button-size: var(--button-medium);
+
+            align-items: center;
+            background-color: #4f97d158;
+            border: 0;
+            border-radius: var(--button-radius);
+            color: var(--interactive);
+            cursor: pointer;
+            display: inline-flex;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: var(--font-size-scale-up-01);
+            font-weight: var(--font-weight-semi-bold);
+            height: var(--button-size);
+            justify-content: center;
+            overflow: hidden;
+            padding: 0 var(--spacing-scale-3x);
+            position: relative;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: auto;
+            box-sizing: border-box;
+        }
+
+        .br-sign-in.primary,
+        .br-button.sign-in.primary {
+            --interactive-rgb: var(--color-dark-rgb);
+            background-color: var(--interactive-light);
+            color: var(--color-dark);
+        }
+
+        .br-sign-in i,
+        .br-button.sign-in i {
+            margin-right: 6px;
+        }
+
+        .br-sign-in img,
+        .br-button.sign-in img {
+            max-height: 20px;
+            width: auto;
+            height: auto;
+        }
+
+        .br-sign-in:not(:disabled):hover,
+        .br-button.sign-in:not(:disabled):hover {
+            background-image: linear-gradient(rgba(var(--interactive-rgb), var(--hover)),
+                    rgba(var(--interactive-rgb), var(--hover)));
+        }
+
+        .br-sign-in:not(:disabled):active,
+        .br-button.sign-in:not(:disabled):active {
+            background-image: linear-gradient(rgba(var(--interactive-rgb), var(--pressed)),
+                    rgba(var(--interactive-rgb), var(--pressed)));
+        }
+
+        .br-sign-in:not(:disabled):focus-visible,
+        .br-button.sign-in:not(:disabled):focus-visible {
+            outline-color: var(--focus);
+            outline-offset: var(--focus-offset, 2px);
+            outline-style: var(--focus-style, solid);
+            outline-width: var(--focus-width, 2px);
+        }
+
+        .footer {
+            margin-top: auto;
+            min-height: 185px;
+            background: #071f48;
+            color: #fff;
+            position: relative;
+            border-bottom: 1px solid #55708f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .footer-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-name {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .footer-name img {
+            width: min(500px, 75vw);
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 0 24px 0;
+        }
+
+        .cpx-error {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+
+            .gov-header {
+                height: auto;
+            }
+
+            .gov-header-inner {
+                height: auto;
+                padding: 10px 20px 15px;
+                flex-wrap: wrap;
+            }
+
+            .gov-logo img {
+                width: 80px;
+            }
+
+            .gov-company {
+                padding-left: 15px;
+                margin-top: 10px;
+                height: 40px;
+            }
+
+            .gov-company img {
+                width: clamp(90px, 18vw, 120px);
+            }
+
+            .gov-nav {
+                width: 100%;
+                margin: 15px 0 0;
+                justify-content: flex-end;
+                gap: 10px;
+                flex-wrap: wrap;
+                white-space: normal;
+            }
+
+            .gov-nav a {
+                padding: 5px;
+            }
+
+            .network-subtitle {
+                display: none;
+            }
+
+            .page-content {
+                padding: 20px;
+            }
+
+            .message-card {
+                padding: 30px;
+            }
+
+            .footer {
+                min-height: 170px;
+                padding: 30px 20px;
+            }
+
+            .footer-name img {
+                width: min(500px, 80vw);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .gov-header-inner {
+                padding: 12px 15px 15px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .gov-logo {
+                margin: 0;
+                padding: 0;
+            }
+
+            .gov-logo img {
+                width: 75px;
+            }
+
+            .gov-company {
+                border-left: 0;
+                border-top: 1px solid #d5d5d5;
+                padding: 10px 0 0;
+                margin-top: 10px;
+                width: 100%;
+                height: auto;
+                min-height: 40px;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .gov-company img {
+                width: 120px;
+            }
+
+            .gov-nav {
+                width: 100%;
+                margin: 15px 0 0;
+                justify-content: center;
+                gap: 5px;
+                flex-wrap: wrap;
+                white-space: normal;
+            }
+
+            .gov-nav a {
+                font-size: 13px;
+                padding: 5px;
+            }
+
+            .network-subtitle {
+                display: none;
+            }
+
+            .page-content {
+                padding: 15px 12px 20px;
+            }
+
+            .message-card {
+                padding: 22px 18px;
+            }
+
+            .message-card h1 {
+                font-size: 18px;
+                line-height: 1.3;
+                margin-bottom: 16px;
+            }
+
+            .message-card p {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            #continue-div {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .br-sign-in,
+            .br-button.sign-in {
+                max-width: 100%;
+                min-height: 40px;
+                height: auto;
+                padding: 8px 18px;
+                white-space: normal;
+            }
+
+            #continue-button {
+                max-width: 100%;
+            }
+
+            #continue-button img {
+                max-width: 70px;
+                height: auto;
+            }
+
+            .footer {
+                min-height: 140px;
+                padding: 25px 15px;
+                
+
+            }
+
+            .footer-name img {
+                width: min(320px, 85vw);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <form name='message' action='submit-message' method='post'>
+
+        <div>
+
+            <header class="gov-header">
+
+                <div class="gov-header-inner">
+
+                    <div class="gov-brand">
+
+                        <div class="gov-logo" aria-label="gov.br">
+                            <img src="img/govbr_logo.svg" alt="">
+                        </div>
+
+                        <div class="network-title">
+                            Wifi-Cenargen
+                        </div>
+
+                    </div>
+
+                    <div class="gov-company">
+                        <img src="img/marca_embrapa.svg" alt="">
+                    </div>
+
+                    <nav class="gov-nav">
+
+                        <a href="https://www.embrapa.br/">
+                            Embrapa
+                        </a>
+
+                        <a href="https://www.gov.br/pt-br">
+                            GovBR
+                        </a>
+
+                        <a href="https://www.gov.br/acessoainformacao/pt-br">
+                            Acesso à Informação
+                        </a>
+
+                        <button id="header-login-button" class="br-sign-in primary" type="button"
+                            aria-label="Entrar" tabindex="1"
+                            onclick="if (submitted == false) { submitted = true; document.forms[0].submit(); }">
+
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            Entrar
+
+                        </button>
+
+                    </nav>
+
+                </div>
+
+            </header>
+
+            <main class="page-content">
+
+                <div id="error" class="cpx-error cpx-message-error">
+                    ${ERROR_MESSAGE}
+                </div>
+
+                <section class="message-card">
+
+                    <h1>
+                        Acesso Visitante à Rede Sem Fio Embrapa/Cenargen
+                    </h1>
+
+                    <p>
+                        Bem-vindo(a) à <em>Rede Sem Fio da Embrapa Recursos Genéticos e Biotecnologia
+                        (Embrapa/Cenargen)</em>
+                        dedicada a atender o acesso à internet de visitantes durante permanência nos ambientes da
+                        Unidade.
+                        O serviço é oferecido nos termos estabelecidos na <a href="#">Norma de Recursos
+                        Computacionais</a>.
+                    </p>
+
+                    <p>
+                        O Acesso é fornecido por meio de autenticação na plataforma <em>Gov.br</em>. Para acessar,
+                        clique no link a seguir:
+                    </p>
+
+                    <div id='continue-div' class='cpx-continue cpx-message-continue'
+                        style='display: ${CONTINUE_BUTTON_DISPLAY};'>
+
+                        <button id="continue-button" class="br-sign-in" type="button"
+                            aria-label="Entrar com GOV.BR" tabindex="1"
+                            onclick="if (submitted == false) { submitted = true; document.forms[0].submit(); }">
+
+                            Entrar com&nbsp;
+
+                            <img src="https://www.gov.br/++theme++padrao_govbr/img/govbr-colorido-b.png"
+                                alt="gov.br" />
+
+                        </button>
+
+                    </div>
+
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+
+                    <p>
+                        (*) Empregados e colaboradores cadastrados devem acessar o serviço
+                        <a href="#"><em>clicando aqui</em></a>.
+                    </p>
+
+                    <input type='hidden' name='_csrf' value='${CSRF_TOKEN}' />
+
+                </section>
+
+            </main>
+
+        </div>
+
+        <footer class="footer">
+
+            <div class="footer-logo">
+
+                <div class="footer-name">
+
+                    <img src="img/marca_trio.svg" alt="">
+
+                </div>
+
+            </div>
+
+        </footer>
+
+        <div style="display:none;">
+
+            ${WIFI4EU_BANNER_IMG}
+            ${TITLE}
+            ${MESSAGE_HTML}
+            ${BOTTOM_LABEL}
+            ${CONTINUE_BUTTON_TEXT}
+            ${BACK_BUTTON_TEXT}
+            ${BACK_BUTTON_CLASS}
+
+        </div>
+
+        <input type="hidden" name="_csrf" value="${CSRF_TOKEN}" />
+
+        <script>
+            "${CONTINUE_BUTTON_DISPLAY}" == "block" ? document.getElementById('continue-button').focus() : document.getElementById('back-button').focus();
+        </script>
+
+    </form>
+
+</body>
+
+</html>
